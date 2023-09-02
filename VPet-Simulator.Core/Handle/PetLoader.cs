@@ -3,7 +3,7 @@ using LinePutScript.Localization.WPF;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
+using System.Windows;
 using static VPet_Simulator.Core.GameSave;
 using static VPet_Simulator.Core.GraphCore;
 
