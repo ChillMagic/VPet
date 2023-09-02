@@ -8,8 +8,8 @@ using System.Windows;
 using VPet_Simulator.Core;
 using System.Windows.Forms;
 using MessageBox = System.Windows.MessageBox;
-using ContextMenu = System.Windows.Forms.ContextMenu;
-using MenuItem = System.Windows.Forms.MenuItem;
+using ContextMenu = System.Windows.Forms.ContextMenuStrip;
+using MenuItem = System.Windows.Forms.ToolStripMenuItem;
 using Application = System.Windows.Application;
 using System.Timers;
 using LinePutScript;
@@ -30,6 +30,7 @@ using System.Globalization;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 using System.Diagnostics.Eventing.Reader;
 using static VPet_Simulator.Windows.Interface.ExtensionFunction;
+using Microsoft.AspNetCore.Mvc;
 
 namespace VPet_Simulator.Windows
 {
@@ -626,10 +627,9 @@ namespace VPet_Simulator.Windows
                     LoadPetHelper();
 
 
-
-                m_menu = new ContextMenu();
-                m_menu.MenuItems.Add(new MenuItem("鼠标穿透".Translate(), (x, y) => { SetTransparentHitThrough(); }) { });
-                m_menu.MenuItems.Add(new MenuItem("操作教程".Translate(), (x, y) =>
+                m_menu = new ContextMenuStrip();
+                m_menu.Items.Add(new ToolStripMenuItem("鼠标穿透".Translate(), null, (x, y) => { SetTransparentHitThrough(); }));
+                m_menu.Items.Add(new ToolStripMenuItem("操作教程".Translate(), null, (x, y) =>
                 {
                     if (LocalizeCore.CurrentCulture == "zh-Hans")
                         ExtensionSetting.StartURL(AppDomain.CurrentDomain.BaseDirectory + @"\Tutorial.html");
@@ -638,7 +638,7 @@ namespace VPet_Simulator.Windows
                     else
                         ExtensionSetting.StartURL(AppDomain.CurrentDomain.BaseDirectory + @"\Tutorial_en.html");
                 }));
-                m_menu.MenuItems.Add(new MenuItem("重置位置与状态".Translate(), (x, y) =>
+                m_menu.Items.Add(new ToolStripMenuItem("重置位置与状态".Translate(), null, (x, y) =>
                 {
                     Main.CleanState();
                     Main.DisplayToNomal();
@@ -646,19 +646,18 @@ namespace VPet_Simulator.Windows
                     Top = (SystemParameters.PrimaryScreenHeight - Height) / 2;
                     //(Core.Controller as MWController).ClearScreenBorderCache();
                 }));
-                m_menu.MenuItems.Add(new MenuItem("反馈中心".Translate(), (x, y) => { new winReport(this).Show(); }));
-                m_menu.MenuItems.Add(new MenuItem("开发控制台".Translate(), (x, y) => { new winConsole(this).Show(); }));
-
-                m_menu.MenuItems.Add(new MenuItem("设置面板".Translate(), (x, y) =>
+                m_menu.Items.Add(new ToolStripMenuItem("反馈中心".Translate(), null, (x, y) => { new winReport(this).Show(); }));
+                m_menu.Items.Add(new ToolStripMenuItem("开发控制台".Translate(), null, (x, y) => { new winConsole(this).Show(); }));
+                m_menu.Items.Add(new ToolStripMenuItem("设置面板".Translate(), null, (x, y) =>
                 {
                     Topmost = false;
                     winSetting.Show();
                 }));
-                m_menu.MenuItems.Add(new MenuItem("退出桌宠".Translate(), (x, y) => Close()));
+                m_menu.Items.Add(new ToolStripMenuItem("退出桌宠".Translate(), null, (x, y) => Close()));
 
                 LoadDIY();
 
-                notifyIcon.ContextMenu = m_menu;
+                notifyIcon.ContextMenuStrip = m_menu;
 
                 notifyIcon.Icon = new System.Drawing.Icon(Application.GetResourceStream(new Uri("pack://application:,,,/vpeticon.ico")).Stream);
 
